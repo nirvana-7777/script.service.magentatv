@@ -47,6 +47,10 @@ def login_process(__username, __password):
     url = "https://accounts.login.idm.telekom.com/oauth2/auth?client_id=10LIVESAM30000004901NGTVMAGENTA000000000&redirect_uri=https%3A%2F%2Fweb.magentatv.de%2Fauthn%2Fidm&response_type=code&scope=openid+offline_access"
     req = requests.get(url, headers=header)
     cookies = req.cookies.get_dict()
+    print("Step1:")
+    print(url)
+    print(header)
+    print(cookies)
 
     # STEP 2: SEND USERNAME/MAIL
     data = {"x-show-cancel": "false", "bdata": "", "pw_usr": __username, "pw_submit": "", "hidden_pwd": ""}
@@ -55,6 +59,13 @@ def login_process(__username, __password):
     url_post = "https://accounts.login.idm.telekom.com/factorx"
     req = requests.post(url_post, cookies=cookies, data=data, headers=header)
     cookies = req.cookies.get_dict()
+    
+    print("Step2:")
+    print(url_post)
+    print(data)
+    print(header)
+    print(cookies)
+
 
     # STEP 3: SEND PASSWORD
     data = {"hidden_usr": __username, "bdata": "", "pw_pwd": __password, "pw_submit": ""}
@@ -62,6 +73,13 @@ def login_process(__username, __password):
 
     req = requests.post(url_post, cookies=cookies, data=data, headers=header)
     code = req.url.split("=")[1]
+    
+    print("Step3:")
+    print(url_post)
+    print(data)
+    print(header)
+    print(cookies)
+
 
     # STEP 4: RETRIEVE ACCESS TOKEN FOR USER
     url = "https://accounts.login.idm.telekom.com/oauth2/tokens"
@@ -73,6 +91,14 @@ def login_process(__username, __password):
     req = requests.post(url, cookies=cookies, data=data, headers=header)
     bearer = req.json()
 
+    print("Step4:")
+    print(url)
+    print(data)
+    print(header)
+    print(cookies)
+
+    
+    
     # STEP 5: UPDATE ACCESS TOKEN FOR TV/EPG
     data = {"scope": "ngtvepg", "grant_type": "refresh_token",
             "refresh_token": bearer["refresh_token"], "client_id": "10LIVESAM30000004901NGTVMAGENTA000000000"}
