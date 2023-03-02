@@ -72,6 +72,9 @@ def login_process(__username, __password):
     data.update(parse_input_values(req.content))
 
     req = requests.post(url_post, cookies=cookies, data=data, headers=header)
+    
+    print(req.url)
+    
     code = req.url.split("=")[1]
     
     print("Step3:")
